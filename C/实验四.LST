@@ -1,0 +1,112 @@
+C51 COMPILER V9.01   实验四                                                                11/02/2021 16:46:41 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE 实验四
+OBJECT MODULE PLACED IN 实验四.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE 实验四.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+*** WARNING C500 IN LINE 1 OF 实验四.C: LICENSE ERROR (R208: RENEW LICENSE ID CODE (LIC))
+
+   1          #include<reg51.h>
+   2          typedef unsigned char u8;
+   3          typedef unsigned int u16;
+   4          u8 D[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};//显示0~9的值
+   5          u8 a,b,b1,b2;
+   6          sbit p22=P2^2;
+   7          sbit p23=P2^3;
+   8          sbit p24=P2^4;
+   9          
+  10          void delay(u16 x)
+  11          {
+  12   1        u16 m,n;
+  13   1        for(;x>0;x--)
+  14   1          for(m=12;m>0;m--)
+  15   1            for(n=1000;n>0;n--);
+  16   1      }
+  17          void smg(u8 x,u8 y)
+  18          {
+  19   1        P1=D[x];p22=0;p22=1;p22=0;
+  20   1        P1=D[y];p23=0;p23=1;p23=0;
+  21   1      }
+  22          void traffic(u8 y)
+  23          {
+  24   1        switch(y)
+  25   1        {
+  26   2          case 0:P1=0x09;p24=0;p24=1;p24=0;break;
+  27   2          case 1:P1=0x12;p24=0;p24=1;p24=0;break;
+  28   2          case 2:P1=0x24;p24=0;p24=1;p24=0;break;
+  29   2          case 3:P1=0x00;p24=0;p24=1;p24=0;break;
+  30   2        }
+  31   1      }
+  32          void main()
+  33          {
+  34   1        EA=1;  //全局中断开
+  35   1        EX0=1;   //外部中断0开
+  36   1        IT0=1;   //跳沿触发中断
+  37   1        while(1)
+  38   1        { 
+  39   2          for(a=10;a>=0;a--)
+  40   2          {
+  41   3            smg((a/10),(a%10));
+  42   3            traffic(0);
+  43   3            delay(10);
+  44   3            if(a==0)break;
+  45   3          }
+  46   2          for(a=5;a>=0;a--)
+  47   2          {
+  48   3      
+  49   3            smg((a/10),(a%10));
+  50   3            traffic(1);
+  51   3            delay(5);
+  52   3            traffic(3);
+  53   3            delay(5);
+  54   3            if(a==0)break;
+C51 COMPILER V9.01   实验四                                                                11/02/2021 16:46:41 PAGE 2   
+
+  55   3          }
+  56   2          for(a=10;a>=0;a--)
+  57   2          {
+  58   3            smg((a/10),(a%10));
+  59   3            traffic(2);
+  60   3            delay(10);
+  61   3            if(a==0)break;
+  62   3          }
+  63   2          for(a=5;a>=0;a--)
+  64   2          {
+  65   3            smg((a/10),(a%10));
+  66   3            traffic(1);
+  67   3            delay(5);
+  68   3            traffic(3);
+  69   3            delay(5);
+  70   3            if(a==0)break;
+  71   3          }
+  72   2        }
+  73   1      }
+  74          void Int0() interrupt 0
+  75          {
+  76   1        for(a=10;a>=0;a--)
+  77   1          {
+  78   2            smg((a/10),(a%10));
+  79   2            traffic(1);
+  80   2            delay(5);
+  81   2            traffic(3);
+  82   2            delay(5);
+  83   2            if(a==0)break;
+  84   2          } 
+  85   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    334    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     14    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
